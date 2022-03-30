@@ -16,82 +16,10 @@
 # - Do appropriate logging in log file
 # - Use retry mechanism
 # - Use exception handling
-require 'rest-client'
-require 'json'
-module MapQuest
-  class Base
-    # Auth
-    @@key = 'F4VdDfuWV9Oebf5EpC8CBqbA8VJUJ90Q'
-    def try(times = 3)
-      retries = 0
-      begin
-        yield()
-      rescue StandardError => e
-        if retries < times
-          retries += 1
-          puts 'Retrying...'
-          retry
-        else
-          raise e
-        end
-      end
-    end
-  end
 
-  class Address < Base
-    def get_address(location)
-      try do
-        res = RestClient.get 'http://www.mapquestapi.com/geocoding/v1/address',
-                             { params: { 'key': @@key, 'location': location } }
-        JSON.load(res.body)
-      end
-    end
-
-    def post_address(location)
-      try do
-        res = RestClient.post 'http://www.mapquestapi.com/geocoding/v1/address',
-                              { 'key': @@key, 'location': location }
-        JSON.load(res.body)
-      end
-    end
-  end
-
-  class Reverse < Base
-    def get_reverse(location)
-      try do
-        res = RestClient.get 'http://www.mapquestapi.com/geocoding/v1/reverse',
-                             { params: { 'key': @@key, 'location': location } }
-        JSON.load(res.body)
-      end
-    end
-
-    def post_reverse(location)
-      try do
-        res = RestClient.post 'http://www.mapquestapi.com/geocoding/v1/reverse',
-                              { 'key': @@key, 'location': location }
-        JSON.load(res.body)
-      end
-    end
-  end
-
-  class Batch < Base
-    def get_batch(locations)
-      try do
-        locs = locations.map { |l| '&location=' + l }.join('')
-        res = RestClient.get "http://www.mapquestapi.com/geocoding/v1/batch?key=#{@@key}#{locs}"
-        JSON.load(res.body)
-      end
-    end
-
-    def post_batch(locations)
-      try do
-        res = RestClient.post "http://www.mapquestapi.com/geocoding/v1/batch?key=#{@@key}",
-                              { 'locations': locations }.to_json
-        JSON.load(res.body)
-      end
-    end
-  end
-end
+require_relative 'mapquest_endpoints/address'
+require_relative 'mapquest_endpoints/batch'
+require_relative 'mapquest_endpoints/reverse'
 
 # puts MapQuest::Address.new.get_address('Vita,Sangli,IN')
 # puts MapQuest::Address.new.post_address('Vita,Sangli,IN')

@@ -4,19 +4,11 @@ require 'json'
 module MapQuest
   class Address < Base
     def get_address(location)
-      try do
-        res = RestClient.get 'http://www.mapquestapi.com/geocoding/v1/address',
-                             { params: { 'key': @@key, 'location': location } }
-        JSON.load(res.body)
-      end
+      make_request(:get, ADDRESS, { 'location': location })
     end
 
     def post_address(location)
-      try do
-        res = RestClient.post 'http://www.mapquestapi.com/geocoding/v1/address',
-                              { 'key': @@key, 'location': location }
-        JSON.load(res.body)
-      end
+      make_request(:post, ADDRESS, { 'location': location })
     end
   end
 end

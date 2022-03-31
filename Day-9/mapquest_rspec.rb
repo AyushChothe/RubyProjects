@@ -1,6 +1,8 @@
 require 'rspec'
 require_relative 'mapquest'
 
+MapQuest::Base.set_key('F4VdDfuWV9Oebf5EpC8CBqbA8VJUJ90Q')
+
 RSpec.describe MapQuest::Address do
   describe '#get_address' do
     before do

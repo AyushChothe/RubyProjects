@@ -3,9 +3,6 @@ require 'rest-client'
 require 'json'
 module MapQuest
   class Base
-    # Auth
-    @@key = 'F4VdDfuWV9Oebf5EpC8CBqbA8VJUJ90Q'
-
     ADDRESS = 'http://www.mapquestapi.com/geocoding/v1/address'
     REVERSE = 'http://www.mapquestapi.com/geocoding/v1/reverse'
     BATCH = 'http://www.mapquestapi.com/geocoding/v1/batch'
@@ -22,7 +19,7 @@ module MapQuest
       end
     end
 
-    def try(times = 3)
+    def try(times = 3, secs = 1)
       retries = 0
       begin
         res = yield()
@@ -40,17 +37,15 @@ module MapQuest
           'Unknown error'
         end
       rescue JSON::ParserError
-        puts 'Something went wrong!'
+        'Expected Response format to be Json but go something else'
       rescue RestClient::ExceptionWithResponse => e
-        e.response
-      rescue StandardError => e
         if retries < times
           retries += 1
+          sleep(secs)
           puts 'Retrying...'
-          # retry-after
           retry
         else
-          raise e
+          e.response
         end
       end
     end

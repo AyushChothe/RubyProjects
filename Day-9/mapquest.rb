@@ -22,7 +22,7 @@ require_relative 'mapquest_endpoints/address'
 require_relative 'mapquest_endpoints/batch'
 require_relative 'mapquest_endpoints/reverse'
 
-MapQuest::Base.set_key('F4VdDfuWV9Oebf5EpC8CBqbA8VJUJ90Q')
+# MapQuest::Base.set_key('F4VdDfuWV9Oebf5EpC8CBqbA8VJUJ90Q')
 
 # puts MapQuest::Address.new.get_address('Vita,Sangli,IN')
 # puts MapQuest::Address.new.post_address('Vita,Sangli,IN')

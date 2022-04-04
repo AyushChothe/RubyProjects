@@ -1,0 +1,3 @@
+[submodule "phishtank_clone"]
+	path = phishtank_clone
+	url = .\\phishtank_clone\\

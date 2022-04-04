@@ -37,7 +37,7 @@ module MapQuest
           'Unknown error'
         end
       rescue JSON::ParserError
-        'Expected Response format to be Json but go something else'
+        'Expected Response format to be Json but got something else'
       rescue RestClient::ExceptionWithResponse => e
         if retries < times
           retries += 1
